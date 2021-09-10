@@ -23,13 +23,12 @@ public class ApiUserController {
 
 
     @PostMapping("/api/user/register.api")
-    public ResponseEntity<?> register(@RequestBody UserRegister parameter){
-
+    public ResponseEntity<?> register(@RequestBody UserRegister parameter) {
 
 
         ServiceResult result = userService.addUser(parameter);
 
-        if(!result.isResult()){
+        if (!result.isResult()) {
             return ResponseEntity.badRequest().body(result.getMessage());
         }
 

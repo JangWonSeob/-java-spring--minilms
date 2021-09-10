@@ -23,7 +23,7 @@ public class UseServiceImpl implements UserService {
 
         ServiceResult result = new ServiceResult();
 
-        if(parameter.getUserId() == null || (parameter.getUserId().length()) < 1){
+        if (parameter.getUserId() == null || (parameter.getUserId().length()) < 1) {
             result.setResult(false);
             result.setMessage(" 아이디 정보가 정확하지 않습니다. ");
             return result;
@@ -32,14 +32,14 @@ public class UseServiceImpl implements UserService {
         // 사용자 아이디가 존재하는지 체크
         Optional<User> optionalUser = userRepository.findById(parameter.getUserId());
 
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             result.setResult(false);
             result.setMessage(" 아이디가 이미 존재합니다. ");
             return result;
         }
 
+        // 비밀번호 암호화
         String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
-
 
 
         User user = User.builder()

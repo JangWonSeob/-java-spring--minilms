@@ -24,15 +24,15 @@ public class UserController {
 
     @PostMapping("/user/register")
     public String registerSubmit(Model model, HttpServletRequest request
-            , UserRegister parameter){
+            , UserRegister parameter) {
 
         System.out.println(parameter.toString());
 
         ServiceResult result = userService.addUser(parameter);
 
-        if(!result.isResult()){
+        if (!result.isResult()) {
             model.addAttribute("errorMessage", result.getMessage());
-            System.out.println("errorMessage : "+ result.getMessage());
+            System.out.println("errorMessage : " + result.getMessage());
             return "user/register";
         }
         // 성공일때 처리는 나중에

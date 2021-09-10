@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // 모든 페이지에 대해서 로그인 없이 접속 가능
         http.authorizeRequests()
-                .antMatchers("/","/**")
+                .antMatchers("/", "/**")
                 .permitAll();
 
         super.configure(http);
