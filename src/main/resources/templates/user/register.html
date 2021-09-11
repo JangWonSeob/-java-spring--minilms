@@ -66,7 +66,7 @@
             <p th:text="${errorMessage}"></p>
         </div>
 
-        <form id="submitForm" method="post" action="/user/register">
+        <form id="submitForm">
 
             <div class="input-group input-group-lg mt-3">
                 <span class="input-group-text" id="inputGroup-sizing-lg-1">이메일(아이디)</span>
@@ -239,24 +239,58 @@
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
+    var addUser = function (parameter) {
+
+        var url = '/api/user/register.api';
+
+        axios.post(url, parameter).then(function (res) {
+            console.log(res);
+
+            let data = res.data;
+
+            if (!data.header.result) {
+                alert(data.header.message);
+                return false;
+            }
+            location.href = '/user/register-complete';
+
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+
     $(document).ready(function () {
 
-        //submit 에빈트를를 잡는다.
         $('#submitForm').on('submit', function () {
 
             var $thisForm = $(this);
 
+            var userId = $thisForm.find('input[name=userId]').val();
             var password = $thisForm.find('input[name=password]').val();
             var rePassword = $thisForm.find('input[name=passwordconfig]').val();
+            var name = $thisForm.find('input[name=name]').val();
+            var zipcode = $thisForm.find('input[name=zipcode]').val();
+            var addr = $thisForm.find('input[name=addr]').val();
+            var addrDetail = $thisForm.find('input[name=addrDetail]').val();
+            var phone = $thisForm.find('input[name=phone]').val();
+            var gender = $thisForm.find('input[name=gender]:checked').val(); // checkbox에서 체크 된 값
 
-            if(password != rePassword){
+
+            if (password != rePassword) {
                 alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 확인해주세요")
                 return false;
             }
-            if(!confirm(" 입력된 정보로 회원가입을 진행하시겠습니까? ")){
+            if (!confirm(" 입력된 정보로 회원가입을 진행하시겠습니까? ")) {
                 return false;
             }
+
+            addUser({
+                userId,password,name,zipcode,addr,addrDetail,phone,gender
+            })
+            return false;
 
         })
     })

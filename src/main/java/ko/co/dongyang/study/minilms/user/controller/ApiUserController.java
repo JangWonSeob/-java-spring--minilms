@@ -1,5 +1,7 @@
 package ko.co.dongyang.study.minilms.user.controller;
 
+import ko.co.dongyang.study.minilms.common.model.ResponseResult;
+import ko.co.dongyang.study.minilms.common.model.ResponseResultHeader;
 import ko.co.dongyang.study.minilms.user.model.ServiceResult;
 import ko.co.dongyang.study.minilms.user.model.UserRegister;
 import ko.co.dongyang.study.minilms.user.service.UserService;
@@ -29,13 +31,12 @@ public class ApiUserController {
         ServiceResult result = userService.addUser(parameter);
 
         if (!result.isResult()) {
-            return ResponseEntity.badRequest().body(result.getMessage());
+            return ResponseResult.fail(result.getMessage());
         }
 
+        return ResponseResult.success(parameter);
 
-        // 성공일때 처리는 나중에
 
-        return ResponseEntity.ok(parameter);
     }
 
 }
