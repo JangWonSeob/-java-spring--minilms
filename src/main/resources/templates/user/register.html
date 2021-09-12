@@ -73,6 +73,10 @@
                 <input type="text" name="userId" required class="form-control" aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-lg">
             </div>
+            <div class="mt-2">
+                <button type="rest" id="checkUserIdButton" class="btn btn-lg btn-secondary ">아이디 중복 확인</button>
+            </div>
+
 
             <div class="input-group input-group-lg mt-4">
                 <span class="input-group-text" id="inputGroup-sizing-lg-2">비밀번호</span>
@@ -128,8 +132,8 @@
 
 
             <div class="text-end">
-                <button type="submit" class="btn btn-lg btn-primary m-auto"> 회원 가입 완료</button>
-                <button type="rest" class="btn btn-lg btn-secondary "> 초기화</button>
+                <button type="submit" class="btn btn-lg btn-primary m-auto">회원 가입 완료</button>
+                <button type="rest" class="btn btn-lg btn-secondary ">초기화</button>
             </div>
         </form>
     </div>
@@ -262,7 +266,39 @@
         });
     };
 
+    var checkUserId =  function (parameter) {
+
+        var url = '/api/user/check-userid.api';
+
+        axios.post(url, parameter).then(function (res) {
+            console.log(res);
+
+            let data = res.data;
+
+            if (!data.header.result) {
+                alert(data.header.message);
+                return false;
+            }
+            alert("사용 가능한 아이디(이메일) 입니다.")
+            return false;
+
+
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
     $(document).ready(function () {
+
+        $('#checkUserIdButton').on('click',function(){
+
+            var userId = $('#submitForm').find('input[name=userId]').val();
+
+            if(userId == ''){
+                alert("아이디를 입력해주세요!");
+            }
+
+            checkUserId({userId});
+        });
 
         $('#submitForm').on('submit', function () {
 

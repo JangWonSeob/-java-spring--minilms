@@ -1,5 +1,6 @@
 package ko.co.dongyang.study.minilms.user.service.impl;
 
+import ko.co.dongyang.study.minilms.user.dto.UserDto;
 import ko.co.dongyang.study.minilms.user.entity.User;
 import ko.co.dongyang.study.minilms.user.model.ServiceResult;
 import ko.co.dongyang.study.minilms.user.model.UserRegister;
@@ -57,5 +58,18 @@ public class UseServiceImpl implements UserService {
 
         result.setResult(true);
         return result;
+    }
+
+    @Override
+    public UserDto getUser(String userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if(!optionalUser.isPresent()){
+            return null;
+        }
+        User user = optionalUser.get();
+
+        return UserDto.of(user);
+
     }
 }
