@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@RequiredArgsConstructor
 @Controller
+@RequiredArgsConstructor
 public class UserController {
 
     @GetMapping("/user/register")
@@ -17,7 +17,6 @@ public class UserController {
     @GetMapping("/user/register-complete")
     public String registerComplete() {
         return "user/register_complete";
-
     }
 
 }
