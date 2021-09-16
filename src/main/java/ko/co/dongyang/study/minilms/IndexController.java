@@ -10,4 +10,10 @@ public class IndexController {
     public String index() {
         return "main/index";
     }
+
+    @GetMapping("/common/denied")
+    public String commonDenied() {
+        return "/common/denied";
+    }
+
 }
