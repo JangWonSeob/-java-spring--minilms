@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- thymeleaf namespace(thymeleaf 편하게 사용하기 위해서 추가) -->
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> 관리자 페이지 </title>
+    <style>
+        table.detail {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table.detail th, table.detail td {
+            border: solid 1px #000000;
+        }
+
+        .buttons {
+            padding: 20px 0;
+        }
+        .buttons a, .buttons button {
+            border: solid 1px blue;
+            border-width: 0;
+            background-color: transparent;
+            font-size: 14px;
+            text-decoration: underline;
+            color: black;
+            cursor: pointer ;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function (){
+
+            $('#deleteButton').on('click', function (){
+                if(!confirm(' 회원 정보를 삭제하시겠습니까 ? ')){
+                    return false;
+                }
+
+                $('#deleteForm').onsubmit();
+            })
+
+        })
+    </script>
+</head>
+<body>
+
+<h1> 회원 정보 </h1>
+
+<table class="detail">
+    <tbody>
+        <tr>
+            <th> 아이디 </th>
+            <td>
+                <p th:text="${user.userId}"></p>
+            </td>
+        </tr>
+        <tr>
+            <th> 이름 </th>
+            <td>
+                <p th:text="${user.name}"></p>
+            </td>
+        </tr>
+        <tr>
+            <th> 주소 </th>
+            <td>
+                <p>
+                    (<span th:text="${user.zipcode}"></span>)
+                     <span th:text="${user.addr}"></span>
+                    <span th:text="${user.addrDetail}"></span>
+                </p>
+
+            </td>
+        </tr>
+        <tr>
+            <th> 전화번호 </th>
+            <td>
+                <p th:text="${user.phone}"></p>
+            </td>
+        </tr>
+        <tr>
+            <th> 성별 </th>
+            <td>
+                <p th:if="${user.gender eq 'F'}">여성</p>
+                <p th:if="${user.gender eq 'M'}">남성</p>
+            </td>
+        </tr>
+        <tr>
+            <th> 생성일 </th>
+            <td>
+                <p th:text="${user.regDtText}"></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="display: none;">
+    <form id="deleteForm" method="post" action="/admin/user/delete">
+        <input th:value="${user.userId}" type="hidden" name="userId" value=""/>
+    </form>
+</div>
+
+<div class="buttons">
+    <a href="#">수정</a> | <button type="button" id="deleteButton">삭제</button> | <a href="/admin/user/list">목록</a>
+</div>
+
+</body>
+</html>

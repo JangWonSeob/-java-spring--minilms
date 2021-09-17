@@ -4,6 +4,7 @@ import ko.co.dongyang.study.minilms.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -29,6 +30,14 @@ public class UserController {
     @RequestMapping("/user/login")
     public String login() {
         return "user/login";
+    }
+
+    @GetMapping("user/reset/password/{uuid}")
+    String resetPassword(@PathVariable("uuid")String uuid){
+
+
+
+        return null;
     }
 
 }

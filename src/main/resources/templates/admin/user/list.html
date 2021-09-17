@@ -1,14 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- thymeleaf namespace(thymeleaf 편하게 사용하기 위해서 추가) -->
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title> 관리자 페이지 </title>
+    <style>
+        table.list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table.list th, table.list td {
+            border: solid 1px #000000;
+        }
+        table.list .nothing {
+            text-align: center;
+            line-height: 100px;
+            min-height: 100px;
+        }
+
+        a.on {
+            font-weight: bold;
+            color: blue;
+        }
+        div.pager {
+            text-align: center;
+        }
+        .search-toolbar {
+            text-align: right;
+            /*border: solid 1px red;*/
+            position: relative;
+            height: 30px;
+        }
+        .search-toolbar .button-all{
+            display: none;
+        }
+        .total-count {
+            position: absolute;
+            left: 0; top: 0;
+            line-height: 30px;
+            margin: 0; padding: 0;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        const getQueryMap = function () {
+            let searchList = (
+                location.search.length > 0 ? location.search.substring(1) : ""
+            ).split("&");
+
+            let searchMap = {};
+
+            for (let i = 0; i < searchList.length; i++) {
+                const items = searchList[i].split("=");
+
+                searchMap[items[0]] = items[1];
+            }
+            return searchMap;
+        };
+
+        const getQueryValue = function (queryKey) {
+            const queryMap = getQueryMap();
+
+            return queryMap[queryKey] || "";
+        };
+
+        $(document).ready(function (){
+            const searchType = getQueryValue('searchType');
+            const searchValue = getQueryValue('searchValue');
+
+            $('#searchType').val(searchType);
+            $('#searchValue').val(searchValue);
+
+            if(searchType.length > 0 || searchValue.length > 0){
+                // 전체보기 버튼 검색 조건이 있을 때 필요
+                $('listAllButton').show();
+            }
+        });
+
+        // 위와 동일일
+        $(function(){
+
+        });
+    </script>
 </head>
 <body>
 
 <h1> 회원 목록 </h1>
 
-<hr/>
+<div class="search-toolbar">
 
+    <div class="total-count">전체개수 : <span th:text="${totalCount}">0</span> 건</div>
+
+
+    <form>
+        <button class="button-all" id="listAllButton" onclick="location.href='/admin/user/list'" type="button"> 전체 목록 </button>
+        <select name="searchType" id="searchType">
+            <option value=""> 전체 </option>
+            <option value="email"> 이메일 </option>
+            <option value="name"> 이름 </option>
+        </select>
+        <input type="text" name="searchValue" id="searchValue" required>
+        <button type="submit"> 검색 </button>
+    </form>
+</div>
+
+<table class="list">
+    <thead>
+    <tr>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>연락처</th>
+        <th>주소</th>
+        <th>등록일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="x : ${userList}">
+        <td>
+            <a th:href="@{/admin/user/detail(userId=${x.userId})}">
+                <p th:text="${x.userId}"></p>
+            </a>
+        </td>
+        <td>
+            <p th:text="${x.name}"></p>
+        </td>
+        <td>
+            <p th:text="${x.phone}"></p>
+        </td>
+        <td>
+            <p>
+                (<span th:text="${x.zipcode}"></span>)
+                <span th:text="${x.addr}"></span>
+                <span th:text="${x.addrDetail}"></span>
+            </p>
+        </td>
+        <td>
+            <p th:text="${x.regDtText}"></p>
+        </td>
+    </tr>
+    <tr th:if="${userList.size() < 1}">
+        <td colspan="5">
+            <p class="nothing"> 내용이 존재하지 않습니다. </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${userList.size() > 0}" class="pager">
+    <div th:utext="${pager}"></div>
+</div>
 </body>
 </html>
